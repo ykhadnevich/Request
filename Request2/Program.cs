@@ -5,48 +5,102 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
+
+
+public interface IHttpClientWrapper
+{
+    Task<HttpResponseMessage> GetAsync(string requestUri);
+}
+
+public class HttpClientWrapper : IHttpClientWrapper
+{
+    private readonly HttpClient _httpClient;
+
+    public HttpClientWrapper()
+    {
+        _httpClient = new HttpClient();
+    }
+
+    public async Task<HttpResponseMessage> GetAsync(string requestUri)
+    {
+        return await _httpClient.GetAsync(requestUri);
+    }
+}
+
 public class Program1
 {
-    static async Task Main(string[] args)
+    private readonly IHttpClientWrapper _httpClientWrapper;
+
+    public Program1(IHttpClientWrapper httpClientWrapper)
+    {
+        _httpClientWrapper = httpClientWrapper;
+    }
+
+    public static async Task Main(string[] args)
+    {
+        var program = new Program1(new HttpClientWrapper());
+        await program.ProcessUserInformationAsync();
+    }
+
+    public async Task ProcessUserInformationAsync()
     {
         string base_url = "https://sef.podkolzin.consulting/api/users/lastSeen";
         int offset = 0;
-        int page_size = 20;
+        int pageSize = 20;
 
         while (true)
         {
-            string api_url = $"{base_url}?offset={offset}";
-            using (HttpClient client = new HttpClient())
+            UserDataResponse userDataResponse = await FetchUserDataAsync(base_url, offset);
+            if (userDataResponse == null)
             {
-                HttpResponseMessage response = await client.GetAsync(api_url);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
-                    break;
-                }
-
-                string json_data = await response.Content.ReadAsStringAsync();
-                UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(json_data);
-
-                foreach (UserData user in userDataResponse.data)
-                {
-                    Console.WriteLine("User Information:");
-                    Console.WriteLine($"Name: {user.firstName}");
-                    Console.WriteLine($"Nickname: {user.nickname}");
-                    string lastSeenStatus = GetLastSeenStatus(user);
-                    Console.WriteLine($"Status: {lastSeenStatus}");
-                    Console.WriteLine();
-                }
-
-                if (userDataResponse.data.Count < page_size)
-                {
-                    break;
-                }
-                offset += page_size;
+                Console.WriteLine("Failed to retrieve data.");
+                break;
             }
+
+            foreach (UserData user in userDataResponse.data)
+            {
+                DisplayUserInfo(user);
+            }
+
+            if (userDataResponse.data.Count < pageSize)
+            {
+                break;
+            }
+            offset += pageSize;
         }
     }
+
+    public async Task<UserDataResponse?> FetchUserDataAsync(string baseUrl, int offset)
+    {
+        try
+        {
+            string apiUrl = $"{baseUrl}?offset={offset}";
+            HttpResponseMessage response = await _httpClientWrapper.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json_data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<UserDataResponse>(json_data);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+
+        return null;
+    }
+
+    public void DisplayUserInfo(UserData user)
+    {
+        Console.WriteLine("User Information:");
+        Console.WriteLine($"Name: {user.firstName}");
+        Console.WriteLine($"Nickname: {user.nickname}");
+        string lastSeenStatus = GetLastSeenStatus(user);
+        Console.WriteLine($"Status: {lastSeenStatus}");
+        Console.WriteLine();
+    }
+
 
     public static string GetLastSeenStatus(UserData user)
     {

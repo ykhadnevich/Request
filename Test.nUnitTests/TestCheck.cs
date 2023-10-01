@@ -12,12 +12,8 @@ namespace Test.nUnitTests
             {
                 isOnline = true,
             };
-
-
             string result = Program1.GetLastSeenStatus(user);
-
-
-            Assert.AreEqual("online", result);
+            Assert.That(result, Is.EqualTo("online"));
         }
 
         [Test]
@@ -32,9 +28,7 @@ namespace Test.nUnitTests
 
 
             string result = Program1.GetLastSeenStatus(user);
-
-
-            Assert.AreEqual("N/A", result);
+            Assert.That(result, Is.EqualTo("N/A"));
         }
 
         [Test]
@@ -51,7 +45,7 @@ namespace Test.nUnitTests
             string result = Program1.GetLastSeenStatus(user);
 
 
-            Assert.AreEqual("just now", result);
+            Assert.That(result, Is.EqualTo("just now"));
         }
 
         [Test]
@@ -65,7 +59,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "a couple of minutes ago");
+            Assert.That(lastSeenStatus, Is.EqualTo("a couple of minutes ago"));
         }
 
         [Test]
@@ -79,7 +73,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "less than a minute ago");
+            Assert.That(lastSeenStatus, Is.EqualTo("less than a minute ago"));
         }
 
         [Test]
@@ -93,7 +87,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "an hour ago");
+            Assert.That(lastSeenStatus, Is.EqualTo("an hour ago"));
         }
 
         [Test]
@@ -107,7 +101,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "today");
+            Assert.That(lastSeenStatus, Is.EqualTo("today"));
         }
 
         [Test]
@@ -121,7 +115,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "yesterday");
+            Assert.AreEqual("yesterday", lastSeenStatus);
         }
 
         [Test]
@@ -135,7 +129,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "this week");
+            Assert.That("this week", Is.EqualTo(lastSeenStatus));
         }
 
         [Test]
@@ -149,7 +143,7 @@ namespace Test.nUnitTests
             };
             string lastSeenStatus = Program1.GetLastSeenStatus(user);
 
-            Assert.AreEqual(lastSeenStatus, "a long time ago");
+            Assert.That(lastSeenStatus, Is.EqualTo("a long time ago"));
         }
     }
 }
