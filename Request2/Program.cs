@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Threading.Tasks.Sources;
 
 public class Program1
 {
@@ -30,14 +29,11 @@ public class Program1
                 string json_data = await response.Content.ReadAsStringAsync();
                 UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(json_data);
 
-
-
                 foreach (UserData user in userDataResponse.data)
                 {
                     Console.WriteLine("User Information:");
                     Console.WriteLine($"Name: {user.firstName}");
                     Console.WriteLine($"Nickname: {user.nickname}");
-                    Console.WriteLine($"Was: {user.lastSeenDate}");
                     string lastSeenStatus = GetLastSeenStatus(user);
                     Console.WriteLine($"Status: {lastSeenStatus}");
                     Console.WriteLine();
@@ -61,23 +57,62 @@ public class Program1
         {
             return "online";
         }
-        else
+
+        string lastSeenStr = user.lastSeenDate;
+
+        if (string.IsNullOrEmpty(lastSeenStr))
         {
-            return " offline";
+            return "N/A";
         }
 
-    }
 
-    public class UserDataResponse
-    {
-        public List<UserData> data { get; set; }
-    }
+        DateTime lastSeenTime = DateTime.Parse(lastSeenStr).ToUniversalTime();
+        TimeSpan timeElapsed = current_time - lastSeenTime;
 
-    public class UserData
-    {
-        public string firstName { get; set; }
-        public string nickname { get; set; }
-        public bool isOnline { get; set; }
-        public string lastSeenDate { get; set; }
+        if (timeElapsed < TimeSpan.FromSeconds(30))
+        {
+            return "just now";
+        }
+        else if (timeElapsed < TimeSpan.FromMinutes(1))
+        {
+            return "less than a minute ago";
+        }
+        else if (timeElapsed < TimeSpan.FromMinutes(60))
+        {
+            return "a couple of minutes ago";
+        }
+        else if (timeElapsed < TimeSpan.FromMinutes(120))
+        {
+            return "an hour ago";
+        }
+        else if (timeElapsed < TimeSpan.FromDays(1))
+        {
+            return "today";
+        }
+        else if (timeElapsed < TimeSpan.FromDays(2))
+        {
+            return "yesterday";
+        }
+        else if (timeElapsed < TimeSpan.FromDays(7))
+        {
+            return "this week";
+        }
+        else
+        {
+            return "a long time ago";
+        }
     }
+}
+
+public class UserDataResponse
+{
+    public List<UserData> data { get; set; }
+}
+
+public class UserData
+{
+    public string firstName { get; set; }
+    public string nickname { get; set; }
+    public bool isOnline { get; set; }
+    public string lastSeenDate { get; set; }
 }
