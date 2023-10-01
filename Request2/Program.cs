@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Threading.Tasks.Sources;
 
 public class Program1
 {
@@ -29,13 +30,16 @@ public class Program1
                 string json_data = await response.Content.ReadAsStringAsync();
                 UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(json_data);
 
+
+
                 foreach (UserData user in userDataResponse.data)
                 {
                     Console.WriteLine("User Information:");
                     Console.WriteLine($"Name: {user.firstName}");
                     Console.WriteLine($"Nickname: {user.nickname}");
                     Console.WriteLine($"Was: {user.lastSeenDate}");
-                    Console.WriteLine($"Status: {user.isOnline}");
+                    string lastSeenStatus = GetLastSeenStatus(user);
+                    Console.WriteLine($"Status: {lastSeenStatus}");
                     Console.WriteLine();
                 }
 
@@ -48,18 +52,32 @@ public class Program1
         }
     }
 
-    
-}
+    public static string GetLastSeenStatus(UserData user)
+    {
+        DateTime current_time = DateTime.UtcNow;
+        bool isOnline = user.isOnline;
 
-public class UserDataResponse
-{
-    public List<UserData> data { get; set; }
-}
+        if (isOnline)
+        {
+            return "online";
+        }
+        else
+        {
+            return " offline";
+        }
 
-public class UserData
-{
-    public string firstName { get; set; }
-    public string nickname { get; set; }
-    public bool isOnline { get; set; }
-    public string lastSeenDate { get; set; }
+    }
+
+    public class UserDataResponse
+    {
+        public List<UserData> data { get; set; }
+    }
+
+    public class UserData
+    {
+        public string firstName { get; set; }
+        public string nickname { get; set; }
+        public bool isOnline { get; set; }
+        public string lastSeenDate { get; set; }
+    }
 }
