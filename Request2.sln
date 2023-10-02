@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Request2", "Request2\Request2.csproj", "{CB33D886-2627-4C2C-92D9-ED65D7B379A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Request2", "Request2\Request2.csproj", "{CB33D886-2627-4C2C-92D9-ED65D7B379A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.nUnitTests", "Test.nUnitTests\Test.nUnitTests.csproj", "{D2E81F94-E3C5-4C8E-BD63-827A0173B73A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.nUnitTests", "Test.nUnitTests\Test.nUnitTests.csproj", "{D2E81F94-E3C5-4C8E-BD63-827A0173B73A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test2.nUnitTests", "Test2.nUnitTests\Test2.nUnitTests.csproj", "{45E42BEE-99E7-4671-9FF9-9D73420DCE7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test2.nUnitTests", "Test2.nUnitTests\Test2.nUnitTests.csproj", "{45E42BEE-99E7-4671-9FF9-9D73420DCE7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
