@@ -7,12 +7,11 @@ namespace Test.nUnitTests
         [Test]
         public void GetLastSeenStatus_OnlineUser_ReturnsOnline()
         {
-
             var user = new UserData
             {
                 isOnline = true,
             };
-            string result = Program1.GetLastSeenStatus(user);
+            string result = Request.GetLastSeenStatus(user);
             Assert.That(result, Is.EqualTo("online"));
         }
 
@@ -23,11 +22,11 @@ namespace Test.nUnitTests
             var user = new UserData
             {
                 isOnline = false,
-                lastSeenDate = null,
+                lastSeenDate = "",
             };
 
 
-            string result = Program1.GetLastSeenStatus(user);
+            string result = Request.GetLastSeenStatus(user);
             Assert.That(result, Is.EqualTo("N/A"));
         }
 
@@ -42,7 +41,7 @@ namespace Test.nUnitTests
             };
 
 
-            string result = Program1.GetLastSeenStatus(user);
+            string result = Request.GetLastSeenStatus(user);
 
 
             Assert.That(result, Is.EqualTo("just now"));
@@ -57,7 +56,7 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddMinutes(-30).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
             Assert.That(lastSeenStatus, Is.EqualTo("a couple of minutes ago"));
         }
@@ -71,7 +70,7 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddSeconds(-50).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
             Assert.That(lastSeenStatus, Is.EqualTo("less than a minute ago"));
         }
@@ -85,7 +84,7 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddMinutes(-71).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
             Assert.That(lastSeenStatus, Is.EqualTo("an hour ago"));
         }
@@ -99,7 +98,7 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddHours(-20).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
             Assert.That(lastSeenStatus, Is.EqualTo("today"));
         }
@@ -113,9 +112,9 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddHours(-26).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
-            Assert.AreEqual("yesterday", lastSeenStatus);
+            Assert.That(lastSeenStatus, Is.EqualTo("yesterday"));
         }
 
         [Test]
@@ -127,9 +126,9 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddDays(-5).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
-            Assert.That("this week", Is.EqualTo(lastSeenStatus));
+            Assert.That(lastSeenStatus, Is.EqualTo("this week"));
         }
 
         [Test]
@@ -141,7 +140,7 @@ namespace Test.nUnitTests
                 isOnline = false,
                 lastSeenDate = DateTime.UtcNow.AddDays(-9).ToString("o")
             };
-            string lastSeenStatus = Program1.GetLastSeenStatus(user);
+            string lastSeenStatus = Request.GetLastSeenStatus(user);
 
             Assert.That(lastSeenStatus, Is.EqualTo("a long time ago"));
         }

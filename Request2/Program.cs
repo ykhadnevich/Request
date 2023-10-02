@@ -27,18 +27,18 @@ public class HttpClientWrapper : IHttpClientWrapper
     }
 }
 
-public class Program1
+public class Request
 {
     private readonly IHttpClientWrapper _httpClientWrapper;
 
-    public Program1(IHttpClientWrapper httpClientWrapper)
+    public Request(IHttpClientWrapper httpClientWrapper)
     {
         _httpClientWrapper = httpClientWrapper;
     }
 
     public static async Task Main(string[] args)
     {
-        var program = new Program1(new HttpClientWrapper());
+        var program = new Request(new HttpClientWrapper());
         await program.ProcessUserInformationAsync();
     }
 

@@ -1,9 +1,4 @@
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Moq;
-using Newtonsoft.Json;
-using NUnit.Framework;
 using Request1;
 
 namespace YourUnitTestsNamespace
@@ -23,7 +18,7 @@ namespace YourUnitTestsNamespace
             mockHttpClientWrapper.Setup(m => m.GetAsync($"{base_url}?offset={offset}"))
                 .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK));
 
-            var program = new Program1(mockHttpClientWrapper.Object);
+            var program = new Request(mockHttpClientWrapper.Object);
 
             async Task CallAsyncMethod()
             {
