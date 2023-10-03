@@ -1,7 +1,7 @@
 .vs
-Test.nUnitTests\bin
-Test.nUnitTests\obj
-Test2.nUnitTests\bin
+Test.nUnitTests/bin
+Test.nUnitTests/obj
+Test2.nUnitTests/bin
 Test2.nUnitTests/obj
-Request2\bin
+Request2/bin
 Request2/obj
